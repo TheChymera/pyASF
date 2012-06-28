@@ -83,20 +83,4 @@ cbar = fig.colorbar(cx0)
 cbar.set_label('Reflectance change')
 cbar.ax.tick_params(direction='out')
 
-C = result.T[7]
-a = numpy.reshape(C,(height,height))
-x0 = fig.add_subplot(3,3,8)
-cx0 = x0.imshow(a, interpolation='bilinear', origin='upper', extent=None)
-cbar = fig.colorbar(cx0)
-cbar.set_label('Reflectance change')
-cbar.ax.tick_params(direction='out')
-
-C = result.T[8]
-a = numpy.reshape(C,(height,height))
-x0 = fig.add_subplot(3,3,9)
-cx0 = x0.imshow(a, interpolation='bilinear', origin='upper', extent=None)
-cbar = fig.colorbar(cx0)
-cbar.set_label('Reflectance change')
-cbar.ax.tick_params(direction='out')
-
 show()
