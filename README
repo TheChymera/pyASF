@@ -2,7 +2,7 @@ pyASF 0.0.1
 28.Jun.2012
 =======
 
-Python toolkit for analysis of intrinsic optic imaging data
+Python toolkit for analysis of intrinsic optical imaging data
 At present the scripts will work only under linux and require python-2.7 with numpy, scpy, matplotlib, 
 and mdp.
 
@@ -10,6 +10,6 @@ and mdp.
 
 Released under the GPLv2 license
 Project led by Horea Christian (address all correspondence to: h.chr@mail.ru)
-Loosly based on the "ASF" MATLAB script collection by Dr. Damian Wallace of the MPI for Biological 
+Loosely based on the "ASF" MATLAB script collection by Dr. Damian Wallace of the MPI for Biological 
 Cybernetics in Tübingen (2011)
 
