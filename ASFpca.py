@@ -82,5 +82,5 @@ cx0 = x0.imshow(a, interpolation='bilinear', origin='upper', extent=None)
 cbar = fig.colorbar(cx0)
 cbar.set_label('Reflectance change')
 cbar.ax.tick_params(direction='out')
-
+#lala
 show()
