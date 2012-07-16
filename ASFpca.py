@@ -30,21 +30,25 @@ fimg_pca = fimg_pca_one / fimg_pca_zero
 
 
 inp = fimg_pca.T # where fimg_pca is 120x(504^2)
-pca = mdp.nodes.PCANode(output_dim=1.00, svd=True, reduce=True) # keep only 97% of the input variance
-pca.train(inp)
-pca.stop_training()
-result = pca(inp)
-result_img = pca.inverse(result[:,0:6])
-#result = np.load(outfile)
 print np.shape(inp)
+pca = mdp.nodes.PCANode(output_dim=1.00, svd=True, reduce=True) # keep only 97% of the input variance
+#pca.train(inp)
+#pca.stop_training()
+result = pca(inp)
 print np.shape(result)
+print result[0:79,0].ndim
+result_img1 = pca.inverse(result[0:79,0])
+result_img2 = pca.inverse(result[0:79,1])
+result_img3 = pca.inverse(result[0:79,2])
+result_img4 = pca.inverse(result[0:79,3])
+#result = np.load(outfile)
 print np.shape(result[:,0])
 print result[:,0]
 print np.sqrt(len(result[:,0]))
 print np.shape(result[0])
 print np.sqrt(len(result[0]))
-print np.shape(result_img)
-print result_img[0], result_img[1], result_img[2], result_img[0]-inp[0]
+print np.shape(result_img1)
+print result_img1[0], result_img2[0], result_img3[0], result_img1[0]-inp[0]
 
 outfile = data_name + "-pca" + str(np.shape(result)) + ".npy"
 np.save(outfile, result)
@@ -70,7 +74,7 @@ x0.yaxis.set_major_formatter(FormatStrFormatter('%.5f'))
 legend(bbox_to_anchor=(0., 1.02), loc=3, ncol=5, mode="expand", borderaxespad=0.)
 x0.set_xlim(0, timepts-1)
 
-C = result_img[0]
+C = result_img1[0]
 height = np.sqrt(len(C))
 a = np.reshape(C,(height,height))
 x0 = fig.add_subplot(3,3,4)
@@ -79,7 +83,7 @@ cbar = fig.colorbar(cx0)
 cbar.set_label('Reflectance change')
 cbar.ax.tick_params(direction='out')
 
-C = result_img[1]
+C = result_img1[1]
 a = np.reshape(C,(height,height))
 x0 = fig.add_subplot(3,3,5)
 cx0 = x0.imshow(a, interpolation='none', origin='upper', extent=None)
@@ -87,7 +91,7 @@ cbar = fig.colorbar(cx0)
 cbar.set_label('Reflectance change')
 cbar.ax.tick_params(direction='out')
 
-C = result_img[2]
+C = result_img1[2]
 a = np.reshape(C,(height,height))
 x0 = fig.add_subplot(3,3,6)
 cx0 = x0.imshow(a, interpolation='none', origin='upper', extent=None)
@@ -95,7 +99,7 @@ cbar = fig.colorbar(cx0)
 cbar.set_label('Reflectance change')
 cbar.ax.tick_params(direction='out')
 
-C = result_img[3]
+C = result_img3[0]
 a = np.reshape(C,(height,height))
 x0 = fig.add_subplot(3,3,7)
 cx0 = x0.imshow(a, interpolation='none', origin='upper', extent=None)
@@ -103,7 +107,7 @@ cbar = fig.colorbar(cx0)
 cbar.set_label('Reflectance change')
 cbar.ax.tick_params(direction='out')
 
-C = result_img[4]
+C = result_img3[1]
 a = np.reshape(C,(height,height))
 x0 = fig.add_subplot(3,3,8)
 cx0 = x0.imshow(a, interpolation='none', origin='upper', extent=None)
@@ -111,7 +115,7 @@ cbar = fig.colorbar(cx0)
 cbar.set_label('Reflectance change')
 cbar.ax.tick_params(direction='out')
 
-C = result_img[5]
+C = result_img3[2]
 a = np.reshape(C,(height,height))
 x0 = fig.add_subplot(3,3,9)
 cx0 = x0.imshow(a, interpolation='none', origin='upper', extent=None)
