@@ -163,7 +163,6 @@ with open(data_name) as f:
     refscalefactor7 = struct.unpack('<l', f.read(4))         # bin * trials for reference
     
 f.close()
-
 #!!!!!!Starting here: Test stuff!!!!!!######
 #print sizeof, exposuretime, nrepetitions, nvideoframesperdataframe, nframesperstim, nstimuli
 #print filesize, lenheader, refscalefactor, refscalefactor1, refscalefactor2, refscalefactor3, refscalefactor4, refscalefactor5, refscalefactor6, refscalefactor7

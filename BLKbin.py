@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import division
 __author__ = 'Horea Christian'
 import gtk
 import struct
@@ -52,6 +53,11 @@ elif numpy.array(datatype) == 14:
     data_type = 2
     bytes_per_pixel = 4
     
+Nbig = numpy.floor(framewidth)
+factor = 8
+Nsmall = numpy.floor(Nbig / factor)
+assert Nsmall == Nbig/factor # ensure "framewidth" is divisible by "factor"
+
 frames_tot = numpy.arange(0, numpy.array(nstimuli) * numpy.array(nframesperstim))
 frame_size = numpy.floor(framewidth) * numpy.floor(frameheight)
 frameimg = numpy.zeros(frame_size*len(frames_tot))
@@ -61,16 +67,23 @@ for i in data_names:
         f.seek(lenheader[0])
         frameimg_new = numpy.fromstring(f.read(frame_size*4*len(frames_tot)),dtype = data_type, count = frame_size*len(frames_tot))
         frameimg = frameimg + frameimg_new
-bin_frame = frameimg / len(data_names)    
+bin_frame = frameimg / len(data_names) 
+small = bin_frame.reshape([2*numpy.array(nframesperstim), Nsmall, Nbig/Nsmall, Nsmall, Nbig/Nsmall]).mean(4).mean(2)
+framewidth = frameheight = Nsmall
 #<begin make new file name
 bpath, extension = os.path.splitext(data_names[-1]); lnumber = bpath[bpath.rfind('B'):]
 bpath, extension = os.path.splitext(data_names[0]); fnumber = bpath[bpath.rfind('B'):]
 filecount = len(data_names)
-newname = bpath + '-' + lnumber + 'fl' + str(len(data_names)) + extension
+newname = bpath + '-' + lnumber + 'fl' + str(len(data_names)) + 'bin' + str(factor) + extension
 #end>
 with open(newname, "w") as n:
     n.write(leheader)
-    bin_frame1 = bin_frame.astype('<u4')
+    bin_frame1 = small.astype('<u4')
     bin_frame2 = bin_frame1.tostring()
     n.write(bin_frame2)
+    n.seek(9*4)
+    framewidth1 = framewidth.astype('<u4')
+    framewidth2 = framewidth1.tostring()
+    n.write(framewidth2)
+    n.write(framewidth2) # width and height although equal have different entries
     n.close()
