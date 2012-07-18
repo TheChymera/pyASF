@@ -2,29 +2,29 @@
 from __future__ import division
 __author__ = 'Horea Christian'
 
-import numpy
+import numpy as np
 import itertools
 from loadsums import pca_loadsum
 from pylab import figure, xlabel, ylabel, show, legend
 from matplotlib.ticker import MultipleLocator, FuncFormatter, FormatStrFormatter
 from load_vdaq_conds import data_type, bytes_per_pixel
 from get_data import data_name, lenheader, nframesperstim, framewidth, frameheight
-nframesperstim = numpy.array(nframesperstim)
+nframesperstim = np.array(nframesperstim)
 
 stim_start = 20
 stim_length = 5
 
-img_range_one = numpy.arange(nframesperstim, nframesperstim * 2)
-img_range_zero = numpy.arange(0, nframesperstim)
+img_range_one = np.arange(nframesperstim, nframesperstim * 2)
+img_range_zero = np.arange(0, nframesperstim)
 
 one_fimg = pca_loadsum(data_name, img_range_one, True, data_type, framewidth, frameheight, lenheader, bytes_per_pixel)
 zero_fimg = pca_loadsum(data_name, img_range_zero, True, data_type, framewidth, frameheight, lenheader, bytes_per_pixel)
-#one_fimg_norm = (one_fimg / numpy.mean(one_fimg[:,0:stim_start]))
-#zero_fimg_norm = (zero_fimg / numpy.mean(zero_fimg[:,0:stim_start])) 
-one_coll = numpy.mean(one_fimg, 0)
-zero_coll = numpy.mean(zero_fimg, 0)
-one_coll_norm = one_coll / numpy.mean(one_coll[:stim_start])
-zero_coll_norm = zero_coll / numpy.mean(zero_coll[:stim_start])
+#one_fimg_norm = (one_fimg / np.mean(one_fimg[:,0:stim_start]))
+#zero_fimg_norm = (zero_fimg / np.mean(zero_fimg[:,0:stim_start])) 
+one_coll = np.mean(one_fimg, 0)
+zero_coll = np.mean(zero_fimg, 0)
+one_coll_norm = one_coll / np.mean(one_coll[:stim_start])
+zero_coll_norm = zero_coll / np.mean(zero_coll[:stim_start])
 rel_coll_one = one_coll_norm / zero_coll_norm
 
 
@@ -44,7 +44,7 @@ x0.yaxis.set_major_formatter(FormatStrFormatter('%.5f'))
 legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=5, mode="expand", borderaxespad=0.)
 x0.set_xlim(0, len(one_coll)-1)
 #C = result.T[1]
-#a = numpy.reshape(C,(height,height))
+#a = np.reshape(C,(height,height))
 #cx1 = x0.imshow(a, interpolation='bilinear', origin='upper', extent=None)
 #cbar = fig.colorbar(cx1)
 #cbar.set_label('Reflectance change')
@@ -54,4 +54,4 @@ show()
 #bpath = os.path.splitext(data_name)[0]
 #filecount = len(data_name)
 #newname = bpath + '-raw_array.npy'
-#numpy.save(newname, one_fimg_pca)
+#np.save(newname, one_fimg_pca)

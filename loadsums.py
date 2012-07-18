@@ -22,7 +22,7 @@ def loadsum (filename, frames, sumframes=True, data_type='<u4', xsize=framewidth
     return frameimg
 
 
-def pca_loadsum (filename, frames, sumframes=True, data_type='<u4', xsize=framewidth, ysize=frameheight, lenheader=0, bytes_per_pixel=4):
+def ca_loadsum (filename, frames, sumframes=True, data_type='<u4', xsize=framewidth, ysize=frameheight, lenheader=0, bytes_per_pixel=4):
     
     nframes = len(frames)
     frame_size = numpy.floor(xsize) * numpy.floor(ysize)

@@ -24,3 +24,8 @@ Thumbs.db
 # Python:
 *.pyc
 *.pyo
+
+# Data traces:
+image.pdf
+image.pmg
+image*.png
