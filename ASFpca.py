@@ -26,14 +26,15 @@ fimg_ca_zero = ca_loadsum(data_name, img_range_zero, True, data_type, framewidth
 fimg_ca = fimg_ca_one / fimg_ca_zero 
 
 print np.shape(fimg_ca)
-pca = mdp.nodes.PCANode(output_dim=10)
+pca = mdp.nodes.PCANode(output_dim=9)
 pca_result = pca(fimg_ca)
 print np.shape(pca_result)
 pca_time = pca.get_projmatrix()
 print np.shape(pca_time)
 ica_input = pca.inverse(pca_result)
 print np.shape(ica_input)
-ica = mdp.nodes.CuBICANode()
+ica = mdp.nodes.CuBICANode(whitened=True)
+ica.train(ica_input)
 pca_result = ica(ica_input)
 pca_time = ica.get_projmatrix()
 
@@ -44,10 +45,11 @@ pca_time = ica.get_projmatrix()
 fig = figure(facecolor='#eeeeee')
 
 x0=fig.add_subplot(3,1,1)
-x0.plot(pca_time[:,0], 'k', alpha = 0.7, label="Component 1")
-x0.plot(pca_time[:,1], 'r', alpha = 0.2, label="Component 2")
+x0.plot(pca_time[:,0], 'k', alpha = 0.2, label="Component 1")
+x0.plot(pca_time[:,1], 'r', alpha = 0.7, label="Component 2")
 x0.plot(pca_time[:,2], 'g', alpha = 0.7, label="Component 3")
 x0.plot(pca_time[:,3], 'b', alpha = 0.7, label="Component 3")
+x0.plot(pca_time[:,5], 'k', alpha = 1, label="Component 3")
 #x0.plot(result[:,3], 'r', alpha = 0.7, label="Component 3")
 #x0.plot(result[:,4], 'g', alpha = 0.7, label="Component 3")
 #x0.plot(result[:,3], 'b', alpha = 0.7, label="Component 4")
@@ -100,7 +102,7 @@ for ax, z in zip(grid, ZS):
 grid = ImageGrid(plt.figure(1, (1,1)), 313,
                   nrows_ncols = (1, 3),
                   direction="row",
-                  axes_pad = 0.2,
+                  axes_pad = 0.4,
                   cbar_location="top",
                   cbar_mode="each",
                   cbar_size="10%",
