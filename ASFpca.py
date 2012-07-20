@@ -31,12 +31,7 @@ pca_result = pca(fimg_ca)
 print np.shape(pca_result)
 pca_time = pca.get_projmatrix()
 print np.shape(pca_time)
-ica_input = pca.inverse(pca_result)
-print np.shape(ica_input)
-ica = mdp.nodes.CuBICANode(whitened=True)
-ica.train(ica_input)
-pca_result = ica(ica_input)
-pca_time = ica.get_projmatrix()
+
 
 #outfile = data_name + "-ica" + str(np.shape(result)) + ".npy"
 #np.save(outfile, result)
