@@ -54,7 +54,7 @@ elif numpy.array(datatype) == 14:
     bytes_per_pixel = 4
     
 Nbig = numpy.floor(framewidth)
-factor = 8
+factor = 2
 Nsmall = numpy.floor(Nbig / factor)
 assert Nsmall == Nbig/factor # ensure "framewidth" is divisible by "factor"
 

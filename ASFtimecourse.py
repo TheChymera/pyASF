@@ -4,7 +4,7 @@ __author__ = 'Horea Christian'
 
 import numpy as np
 import itertools
-from loadsums import pca_loadsum
+from loadsums import ca_loadsum
 from pylab import figure, xlabel, ylabel, show, legend
 from matplotlib.ticker import MultipleLocator, FuncFormatter, FormatStrFormatter
 from load_vdaq_conds import data_type, bytes_per_pixel
@@ -17,8 +17,8 @@ stim_length = 5
 img_range_one = np.arange(nframesperstim, nframesperstim * 2)
 img_range_zero = np.arange(0, nframesperstim)
 
-one_fimg = pca_loadsum(data_name, img_range_one, True, data_type, framewidth, frameheight, lenheader, bytes_per_pixel)
-zero_fimg = pca_loadsum(data_name, img_range_zero, True, data_type, framewidth, frameheight, lenheader, bytes_per_pixel)
+one_fimg = ca_loadsum(data_name, img_range_one, True, data_type, framewidth, frameheight, lenheader, bytes_per_pixel)
+zero_fimg = ca_loadsum(data_name, img_range_zero, True, data_type, framewidth, frameheight, lenheader, bytes_per_pixel)
 #one_fimg_norm = (one_fimg / np.mean(one_fimg[:,0:stim_start]))
 #zero_fimg_norm = (zero_fimg / np.mean(zero_fimg[:,0:stim_start])) 
 one_coll = np.mean(one_fimg, 0)

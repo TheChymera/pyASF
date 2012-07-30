@@ -43,7 +43,7 @@ ylength_unit = numpy.array(frameheight) / 8.2
 
 fig = figure(facecolor='#eeeeee')
 ax = fig.add_subplot(1,1,1)
-cax = ax.imshow(fimg3, interpolation='bilinear', origin='upper', extent=None)
+cax = ax.imshow(fimg3, interpolation='none', origin='upper', extent=None)
 matplotlib.pyplot.tick_params(axis='both', direction='out')
 ax.xaxis.set_major_locator(matplotlib.ticker.IndexLocator(xlength_unit, 0))
 ax.yaxis.set_major_locator(matplotlib.ticker.IndexLocator(ylength_unit, 0))
