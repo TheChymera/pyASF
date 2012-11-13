@@ -54,7 +54,8 @@ elif numpy.array(datatype) == 14:
     bytes_per_pixel = 4
     
 Nbig = numpy.floor(framewidth)
-factor = 2
+factor = 4 # which factor to shrink by (cell size = factor*factor) 
+multiple = False # whether to actually bin multiple files 
 Nsmall = numpy.floor(Nbig / factor)
 assert Nsmall == Nbig/factor # ensure "framewidth" is divisible by "factor"
 
@@ -62,28 +63,55 @@ frames_tot = numpy.arange(0, numpy.array(nstimuli) * numpy.array(nframesperstim)
 frame_size = numpy.floor(framewidth) * numpy.floor(frameheight)
 frameimg = numpy.zeros(frame_size*len(frames_tot))
 
-for i in data_names:
-    with open(i) as f:
-        f.seek(lenheader[0])
-        frameimg_new = numpy.fromstring(f.read(frame_size*4*len(frames_tot)),dtype = data_type, count = frame_size*len(frames_tot))
-        frameimg = frameimg + frameimg_new
-bin_frame = frameimg / len(data_names) 
-small = bin_frame.reshape([2*numpy.array(nframesperstim), Nsmall, Nbig/Nsmall, Nsmall, Nbig/Nsmall]).mean(4).mean(2)
-framewidth = frameheight = Nsmall
-#<begin make new file name
-bpath, extension = os.path.splitext(data_names[-1]); lnumber = bpath[bpath.rfind('B'):]
-bpath, extension = os.path.splitext(data_names[0]); fnumber = bpath[bpath.rfind('B'):]
-filecount = len(data_names)
-newname = bpath + '-' + lnumber + 'fl' + str(len(data_names)) + 'bin' + str(factor) + extension
-#end>
-with open(newname, "w") as n:
-    n.write(leheader)
-    bin_frame1 = small.astype('<u4')
-    bin_frame2 = bin_frame1.tostring()
-    n.write(bin_frame2)
-    n.seek(9*4)
-    framewidth1 = framewidth.astype('<u4')
-    framewidth2 = framewidth1.tostring()
-    n.write(framewidth2)
-    n.write(framewidth2) # width and height although equal have different entries
-    n.close()
+if multiple == True: # code for binning multiple files
+    for i in data_names:
+        with open(i) as f:
+            f.seek(lenheader[0])
+            frameimg_new = numpy.fromstring(f.read(frame_size*4*len(frames_tot)),dtype = data_type, count = frame_size*len(frames_tot))
+            frameimg = frameimg + frameimg_new
+    bin_frame = frameimg / len(data_names) 
+    small = bin_frame.reshape([2*numpy.array(nframesperstim), Nsmall, Nbig/Nsmall, Nsmall, Nbig/Nsmall]).mean(4).mean(2)
+    framewidth = frameheight = Nsmall
+    #<begin make new file name
+    bpath, extension = os.path.splitext(data_names[-1]); lnumber = bpath[bpath.rfind('B'):]
+    bpath, extension = os.path.splitext(data_names[0]); fnumber = bpath[bpath.rfind('B'):]
+    filecount = len(data_names)
+    newname = bpath + '-' + lnumber + 'fl' + str(len(data_names)) + 'bin' + str(factor) + extension
+    #end>
+    with open(newname, "w") as n:
+        n.write(leheader)
+        bin_frame1 = small.astype('<u4')
+        bin_frame2 = bin_frame1.tostring()
+        n.write(bin_frame2)
+        n.seek(9*4)
+        framewidth1 = framewidth.astype('<u4')
+        framewidth2 = framewidth1.tostring()
+        n.write(framewidth2)
+        n.write(framewidth2) # width and height although equal have different entries
+        n.close()
+else: # code for binning cells in single files
+    for i in data_names:
+        with open(i) as f:
+            f.seek(lenheader[0])
+            frameimg = numpy.fromstring(f.read(frame_size*4*len(frames_tot)),dtype = data_type, count = frame_size*len(frames_tot))
+        small = frameimg.reshape([2*numpy.array(nframesperstim), Nsmall, Nbig/Nsmall, Nsmall, Nbig/Nsmall]).mean(4).mean(2)
+        framewidth = frameheight = Nsmall
+        #<begin make new file name
+        le_path, le_file = os.path.split(i)
+        le_file, le_extension = os.path.splitext(le_file)        
+        newname = le_path+'/single_binned/'+le_file+'bin'+str(factor)+le_extension
+        if os.path.isdir(le_path+'/single_binned/'):
+            pass
+        else: os.mkdir(le_path+'/single_binned/')
+        #end>
+        with open(newname, "w") as n:
+            n.write(leheader)
+            bin_frame1 = small.astype('<u4')
+            bin_frame2 = bin_frame1.tostring()
+            n.write(bin_frame2)
+            n.seek(9*4)
+            framewidth1 = framewidth.astype('<u4')
+            framewidth2 = framewidth1.tostring()
+            n.write(framewidth2)
+            n.write(framewidth2) # width and height although equal have different entries
+            n.close()
