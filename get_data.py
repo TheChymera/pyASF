@@ -4,7 +4,7 @@ import struct
 import gtk
 
 
-def data_name_get():
+def data_name_get(): #for single file name
     if gtk.pygtk_version < (2,3,90):
         print "PyGtk 2.3.90 or later required for Plot-It"
         raise SystemExit
@@ -32,11 +32,11 @@ def data_name_get():
     dialog.destroy()
     return data_name
 
-def data_names_get():
+def data_names_get(): # for multiple files' list
     if gtk.pygtk_version < (2,3,90):
         print "PyGtk 2.3.90 or later required for Plot-It"
         raise SystemExit
-    dialog = gtk.FileChooserDialog("Choose a block file...",
+    dialog = gtk.FileChooserDialog("Choose block files...",
                                    None,
                                    gtk.FILE_CHOOSER_ACTION_OPEN,
                                    (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,

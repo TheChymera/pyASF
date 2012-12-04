@@ -30,3 +30,7 @@ image-*.pdf
 image.pdf
 image.pmg
 image*.png
+
+#eclipse 
+.project
+.pydevproject
