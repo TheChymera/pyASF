@@ -1,7 +1,7 @@
 __author__ = 'Horea Christian'
 
 import numpy
-import pyutils.exceptions
+from pyutils.exceptions import InputError
 from get_data import unpack_block_file
 
 def vdaq_conds(data_name):
@@ -15,7 +15,7 @@ def vdaq_conds(data_name):
     sumframes = False
     
     if numpy.array(filesubtype) != 11:
-        raise pyutils.exceptions.InputError('not a VDAQ file')
+        raise InputError('not a VDAQ file')
     
     if numpy.array(datatype) == 13:
         data_type = '<u4'
@@ -24,5 +24,5 @@ def vdaq_conds(data_name):
         data_type = 2
         bytes_per_pixel = 4
     else:
-        raise pyutils.exceptions.InputError('Check the data type')
+        raise InputError('Check the data type')
     return data_type, bytes_per_pixel
